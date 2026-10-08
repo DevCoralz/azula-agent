@@ -1,0 +1,213 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Azula Code design system.
+ * Obsidian glassmorphism. All values are oklch tokens — never hardcode colors in components.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.75rem;
+
+  --background: oklch(0.1448 0.0045 285.9);
+  --foreground: oklch(0.985 0 0);
+
+  --surface: oklch(0.1822 0.0045 285.9 / 70%);
+  --surface-strong: oklch(0.2103 0.0059 285.9 / 88%);
+
+  --card: oklch(0.1822 0.0045 285.9 / 70%);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.1822 0.0045 285.9 / 96%);
+  --popover-foreground: oklch(0.985 0 0);
+
+  --primary: oklch(0.5854 0.2041 262.88);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.2435 0.0059 285.9);
+  --secondary-foreground: oklch(0.985 0 0);
+
+  --muted: oklch(0.2435 0.0059 285.9);
+  --muted-foreground: oklch(0.6523 0.0119 286.07);
+
+  --accent: oklch(0.2746 0.0059 285.9);
+  --accent-foreground: oklch(0.985 0 0);
+
+  --destructive: oklch(0.6368 0.2078 25.33);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  --success: oklch(0.6959 0.1491 162.48);
+  --success-foreground: oklch(0.145 0 0);
+
+  --warning: oklch(0.7686 0.1647 70.08);
+  --warning-foreground: oklch(0.145 0 0);
+
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.5854 0.2041 262.88);
+
+  --chart-1: oklch(0.5854 0.2041 262.88);
+  --chart-2: oklch(0.6959 0.1491 162.48);
+  --chart-3: oklch(0.7686 0.1647 70.08);
+  --chart-4: oklch(0.6368 0.2078 25.33);
+  --chart-5: oklch(0.6523 0.0119 286.07);
+
+  --sidebar: oklch(0.1622 0.0045 285.9);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.5854 0.2041 262.88);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.2435 0.0059 285.9);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.5854 0.2041 262.88);
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    letter-spacing: -0.011em;
+  }
+
+  ::selection {
+    background-color: oklch(0.5854 0.2041 262.88 / 35%);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(1 0 0 / 12%);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(1 0 0 / 22%);
+    background-clip: content-box;
+  }
+}
+
+@utility glass {
+  background-color: var(--surface);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+}
+
+@utility glass-strong {
+  background-color: var(--surface-strong);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--border);
+}
+
+@utility text-gradient {
+  background: linear-gradient(
+    100deg,
+    oklch(0.985 0 0) 10%,
+    oklch(0.72 0.14 262.88) 92%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility grid-backdrop {
+  background-image:
+    linear-gradient(to right, oklch(1 0 0 / 4%) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(1 0 0 / 4%) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@utility glow-primary {
+  box-shadow:
+    0 0 0 1px oklch(0.5854 0.2041 262.88 / 35%),
+    0 18px 60px -22px oklch(0.5854 0.2041 262.88 / 70%);
+}
+
+@keyframes azula-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-rise {
+  animation: azula-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
