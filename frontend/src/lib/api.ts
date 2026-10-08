@@ -5,7 +5,7 @@
 
 export const API_BASE =
   (import.meta.env['VITE_API_URL'] as string | undefined)?.trim().replace(/\/+$/, "") ||
-  "https://8001-2d70e993-37c9-47b3-9425-f0841ae31570.proxy.daytona.work";
+  "https://8001-df4cd476-1291-456c-bda1-a225ed886904.proxy.daytona.work";
 
 const TOKEN_KEY = "azula.token";
 
