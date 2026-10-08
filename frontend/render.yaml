@@ -1,0 +1,15 @@
+# Render blueprint for the Azula Code frontend.
+# The backend runs on your own VPS or Pterodactyl node — it executes real
+# shell commands and needs a persistent disk, so it is not part of this blueprint.
+services:
+  - type: web
+    name: azula-code-frontend
+    runtime: node
+    plan: starter
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: VITE_API_URL
+        sync: false # REQUIRED: current reachable Daytona /health URL, without /health

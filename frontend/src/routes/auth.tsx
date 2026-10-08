@@ -51,63 +51,49 @@ function AuthPage() {
   }
 
   return (
-    <div className="grid min-h-screen lg:grid-cols-2">
-      <div className="relative hidden flex-col justify-between overflow-hidden border-r border-border p-10 lg:flex">
-        <div className="pointer-events-none absolute inset-0 grid-backdrop opacity-60" />
-        <Logo className="relative" />
-        <div className="relative max-w-md">
-          <p className="text-2xl font-medium leading-snug tracking-tight">
-            "I described the migration, went to make coffee, and came back to a green test suite."
-          </p>
-          <p className="mt-4 text-sm text-muted-foreground">Backend engineer, early access</p>
-        </div>
-        <p className="relative font-mono text-xs text-muted-foreground">isolated · encrypted · yours</p>
-      </div>
+    <div className="flex min-h-screen flex-col items-center px-5 py-10 sm:justify-center sm:py-0">
+      <Logo />
+      <div className="mt-10 w-full max-w-sm animate-rise">
+        <h1 className="text-xl font-semibold tracking-tight">
+          {mode === "signin" ? "Sign in" : "Create your account"}
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {mode === "signin" ? "Welcome back." : "Free. No card. Bring your own API key."}
+        </p>
 
-      <div className="flex items-center justify-center p-6">
-        <div className="w-full max-w-sm animate-rise">
-          <Logo className="mb-10 lg:hidden" />
-          <h1 className="text-2xl font-semibold tracking-tight">
-            {mode === "signin" ? "Welcome back" : "Create your account"}
-          </h1>
-          <p className="mt-1.5 text-sm text-muted-foreground">
-            {mode === "signin" ? "Sign in to your workspace." : "Free. No card. Bring your own API key."}
-          </p>
-
-          <form onSubmit={submit} className="mt-8 space-y-4">
-            {mode === "register" && (
-              <div className="space-y-1.5">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" required maxLength={80} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-              </div>
-            )}
+        <form onSubmit={submit} className="mt-7 space-y-4">
+          {mode === "register" && (
             <div className="space-y-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" required autoComplete="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+              <Label htmlFor="name">Name</Label>
+              <Input id="name" required maxLength={80} autoComplete="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
             </div>
+          )}
+          <div className="space-y-1.5">
+            <Label htmlFor="email">Email</Label>
+            <Input id="email" type="email" required autoComplete="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="password">Password</Label>
+            <Input id="password" type="password" required minLength={8} autoComplete={mode === "signin" ? "current-password" : "new-password"} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+          </div>
+          {mode === "register" && (
             <div className="space-y-1.5">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required minLength={8} autoComplete={mode === "signin" ? "current-password" : "new-password"} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+              <Label htmlFor="ref">Referral ID <span className="text-muted-foreground">(optional)</span></Label>
+              <Input id="ref" className="font-mono" placeholder="From an invite link" value={form.referral} onChange={(e) => setForm({ ...form, referral: e.target.value })} />
             </div>
-            {mode === "register" && (
-              <div className="space-y-1.5">
-                <Label htmlFor="ref">Referral code <span className="text-muted-foreground">(optional)</span></Label>
-                <Input id="ref" className="font-mono" value={form.referral} onChange={(e) => setForm({ ...form, referral: e.target.value })} />
-              </div>
-            )}
-            <Button type="submit" className="w-full" disabled={busy}>
-              {busy && <Loader2 className="h-4 w-4 animate-spin" />}
-              {mode === "signin" ? "Sign in" : "Create account"}
-            </Button>
-          </form>
+          )}
+          <Button type="submit" className="w-full" disabled={busy}>
+            {busy && <Loader2 className="h-4 w-4 animate-spin" />}
+            {mode === "signin" ? "Sign in" : "Create account"}
+          </Button>
+        </form>
 
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            {mode === "signin" ? "New here? " : "Already have an account? "}
-            <button className="text-foreground underline-offset-4 hover:underline" onClick={() => setMode(mode === "signin" ? "register" : "signin")}>
-              {mode === "signin" ? "Create an account" : "Sign in"}
-            </button>
-          </p>
-        </div>
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          {mode === "signin" ? "New here? " : "Already have an account? "}
+          <button className="text-foreground underline-offset-4 hover:underline" onClick={() => setMode(mode === "signin" ? "register" : "signin")}>
+            {mode === "signin" ? "Create an account" : "Sign in"}
+          </button>
+        </p>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { api, getToken, setToken, type User } from "./api";
+import { api, ApiError, getToken, setToken, type User } from "./api";
 
 interface AuthState {
   user: User | null;
@@ -39,8 +39,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const data = await api<{ user: User }>("/api/auth/me");
       setUserState(data.user);
-    } catch {
-      setToken(null);
+    } catch (error) {
+      // Network/CORS outages are not evidence that the user's token expired.
+      if (error instanceof ApiError && (error.status === 401 || error.status === 403)) setToken(null);
       setUserState(null);
     } finally {
       setLoading(false);
@@ -56,6 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       method: "POST",
       body: { email, password },
     });
+    if (!data?.token || !data.user?.id) throw new Error("Sign-in could not be confirmed. Please try again.");
     setToken(data.token);
     setUserState(data.user);
   }, []);
@@ -71,6 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         "/api/auth/register",
         { method: "POST", body: input },
       );
+      if (!data?.token || !data.user?.id) throw new Error("Account creation could not be confirmed. Please try again.");
       setToken(data.token);
       setUserState(data.user);
     },

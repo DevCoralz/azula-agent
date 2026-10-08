@@ -4,8 +4,8 @@
  */
 
 export const API_BASE =
-  (import.meta.env['VITE_API_URL'] as string | undefined)?.replace(/\/$/, "") ??
-  "http://localhost:8000";
+  (import.meta.env['VITE_API_URL'] as string | undefined)?.trim().replace(/\/+$/, "") ||
+  "https://8001-2d70e993-37c9-47b3-9425-f0841ae31570.proxy.daytona.work";
 
 const TOKEN_KEY = "azula.token";
 
@@ -33,24 +33,35 @@ export async function api<T = unknown>(
   options: { method?: string; body?: unknown; signal?: AbortSignal | undefined } = {},
 ): Promise<T> {
   const token = getToken();
-  const res = await fetch(`${API_BASE}${path}`, {
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
     method: options.method ?? "GET",
     headers: {
-      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...(options.body === undefined ? {} : { "Content-Type": "application/json" }),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     ...(options.body === undefined ? {} : { body: JSON.stringify(options.body) }),
-    ...(options.signal ? { signal: options.signal } : {}),
-  });
+    signal: options.signal ?? AbortSignal.timeout(20000),
+    });
+  } catch (error) {
+    if (options.signal?.aborted) throw error;
+    throw new ApiError("Cannot reach the server. Check your connection or try again shortly.", 0);
+  }
 
   const text = await res.text();
   const data = text ? safeJson(text) : null;
 
   if (!res.ok) {
     const message =
-      (data as { error?: string } | null)?.error ??
+      (data as { error?: string; message?: string } | null)?.error ??
+      (data as { message?: string } | null)?.message ??
       `Request failed with status ${res.status}`;
     throw new ApiError(message, res.status);
+  }
+  if (text && !res.headers.get("content-type")?.includes("application/json")) {
+    throw new ApiError("The server returned an unexpected response. Please try again.", res.status);
   }
   return data as T;
 }

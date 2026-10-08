@@ -6,7 +6,8 @@
 
 /*
  * Azula Code design system.
- * Obsidian glassmorphism. All values are oklch tokens — never hardcode colors in components.
+ * Black and white only. Red = errors, green = success. Nothing else carries color.
+ * All values are oklch tokens — never hardcode colors in components.
  */
 
 @theme inline {
@@ -65,59 +66,90 @@
 :root {
   --radius: 0.75rem;
 
-  --background: oklch(0.1448 0.0045 285.9);
-  --foreground: oklch(0.985 0 0);
+  /* White canvas, near-black ink. */
+  --background: oklch(0.995 0 0);
+  --foreground: oklch(0.145 0 0);
 
-  --surface: oklch(0.1822 0.0045 285.9 / 70%);
-  --surface-strong: oklch(0.2103 0.0059 285.9 / 88%);
+  --surface: oklch(0.98 0 0 / 72%);
+  --surface-strong: oklch(0.99 0 0 / 92%);
 
-  --card: oklch(0.1822 0.0045 285.9 / 70%);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.1822 0.0045 285.9 / 96%);
-  --popover-foreground: oklch(0.985 0 0);
+  --card: oklch(0.985 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(0.99 0 0);
+  --popover-foreground: oklch(0.145 0 0);
 
-  --primary: oklch(0.5854 0.2041 262.88);
-  --primary-foreground: oklch(0.985 0 0);
+  /* Primary is simply black. */
+  --primary: oklch(0.145 0 0);
+  --primary-foreground: oklch(0.99 0 0);
 
-  --secondary: oklch(0.2435 0.0059 285.9);
-  --secondary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.145 0 0);
 
-  --muted: oklch(0.2435 0.0059 285.9);
-  --muted-foreground: oklch(0.6523 0.0119 286.07);
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.5 0 0);
 
-  --accent: oklch(0.2746 0.0059 285.9);
-  --accent-foreground: oklch(0.985 0 0);
+  --accent: oklch(0.96 0 0);
+  --accent-foreground: oklch(0.145 0 0);
 
-  --destructive: oklch(0.6368 0.2078 25.33);
-  --destructive-foreground: oklch(0.985 0 0);
+  /* The only colors in the whole UI. */
+  --destructive: oklch(0.577 0.245 27.3);
+  --destructive-foreground: oklch(0.99 0 0);
 
-  --success: oklch(0.6959 0.1491 162.48);
-  --success-foreground: oklch(0.145 0 0);
+  --success: oklch(0.627 0.194 149.2);
+  --success-foreground: oklch(0.99 0 0);
 
-  --warning: oklch(0.7686 0.1647 70.08);
-  --warning-foreground: oklch(0.145 0 0);
+  --warning: oklch(0.55 0 0);
+  --warning-foreground: oklch(0.99 0 0);
 
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 14%);
-  --ring: oklch(0.5854 0.2041 262.88);
+  --border: oklch(0 0 0 / 10%);
+  --input: oklch(0 0 0 / 16%);
+  --ring: oklch(0.145 0 0);
 
-  --chart-1: oklch(0.5854 0.2041 262.88);
-  --chart-2: oklch(0.6959 0.1491 162.48);
-  --chart-3: oklch(0.7686 0.1647 70.08);
-  --chart-4: oklch(0.6368 0.2078 25.33);
-  --chart-5: oklch(0.6523 0.0119 286.07);
+  --chart-1: oklch(0.145 0 0);
+  --chart-2: oklch(0.4 0 0);
+  --chart-3: oklch(0.6 0 0);
+  --chart-4: oklch(0.577 0.245 27.3);
+  --chart-5: oklch(0.627 0.194 149.2);
 
-  --sidebar: oklch(0.1622 0.0045 285.9);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.5854 0.2041 262.88);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.2435 0.0059 285.9);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.5854 0.2041 262.88);
+  --sidebar: oklch(0.975 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.145 0 0);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.94 0 0);
+  --sidebar-accent-foreground: oklch(0.145 0 0);
+  --sidebar-border: oklch(0 0 0 / 10%);
+  --sidebar-ring: oklch(0.145 0 0);
 }
 
 .dark {
+  /* Inverted monochrome for users who force dark mode. */
+  --background: oklch(0.13 0 0);
+  --foreground: oklch(0.985 0 0);
+  --surface: oklch(0.18 0 0 / 72%);
+  --surface-strong: oklch(0.2 0 0 / 92%);
+  --card: oklch(0.18 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.18 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.13 0 0);
+  --secondary: oklch(0.24 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.24 0 0);
+  --muted-foreground: oklch(0.65 0 0);
+  --accent: oklch(0.24 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.985 0 0);
+  --sidebar: oklch(0.16 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.985 0 0);
+  --sidebar-primary-foreground: oklch(0.13 0 0);
+  --sidebar-accent: oklch(0.24 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.985 0 0);
   color-scheme: dark;
 }
 
@@ -127,7 +159,7 @@
   }
 
   html {
-    color-scheme: dark;
+    color-scheme: light;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -139,7 +171,8 @@
   }
 
   ::selection {
-    background-color: oklch(0.5854 0.2041 262.88 / 35%);
+    background-color: oklch(0 0 0 / 88%);
+    color: oklch(0.99 0 0);
   }
 
   ::-webkit-scrollbar {
@@ -150,13 +183,13 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: oklch(1 0 0 / 12%);
+    background: oklch(0 0 0 / 18%);
     border-radius: 999px;
     border: 3px solid transparent;
     background-clip: content-box;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: oklch(1 0 0 / 22%);
+    background: oklch(0 0 0 / 32%);
     background-clip: content-box;
   }
 }
@@ -174,11 +207,7 @@
 }
 
 @utility text-gradient {
-  background: linear-gradient(
-    100deg,
-    oklch(0.985 0 0) 10%,
-    oklch(0.72 0.14 262.88) 92%
-  );
+  background: linear-gradient(100deg, oklch(0.145 0 0) 40%, oklch(0.45 0 0) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -186,15 +215,13 @@
 
 @utility grid-backdrop {
   background-image:
-    linear-gradient(to right, oklch(1 0 0 / 4%) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(1 0 0 / 4%) 1px, transparent 1px);
+    linear-gradient(to right, oklch(0 0 0 / 4%) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0 0 0 / 4%) 1px, transparent 1px);
   background-size: 56px 56px;
 }
 
 @utility glow-primary {
-  box-shadow:
-    0 0 0 1px oklch(0.5854 0.2041 262.88 / 35%),
-    0 18px 60px -22px oklch(0.5854 0.2041 262.88 / 70%);
+  box-shadow: 0 10px 40px -18px oklch(0 0 0 / 25%);
 }
 
 @keyframes azula-rise {

@@ -41,6 +41,7 @@ function Workspace() {
   const [files, setFiles] = useState<WorkspaceFile[]>([]);
   const [openFile, setOpenFile] = useState<{ path: string; content: string } | null>(null);
   const [tab, setTab] = useState<"code" | "preview">("code");
+  const [pane, setPane] = useState<"agent" | "files" | "code">("agent");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [models, setModels] = useState<ModelRecord[]>([]);
   const [modelId, setModelId] = useState<string>("");
@@ -101,7 +102,7 @@ function Workspace() {
     if (!active) return;
     try {
       const d = await api<{ content: string }>(`/api/workspaces/${active.id}/file?path=${encodeURIComponent(path)}`);
-      setOpenFile({ path, content: d.content }); setTab("code");
+      setOpenFile({ path, content: d.content }); setTab("code"); setPane("code");
     } catch (e) { toast.error(e instanceof Error ? e.message : "Could not open file"); }
   }
 
@@ -122,7 +123,7 @@ function Workspace() {
     try {
       await streamAgent({ workspaceId: active.id, prompt: text, mode, modelId: modelId ? Number(modelId) : undefined }, (ev) => {
         if (ev.type === "file_changed") void loadFiles(active);
-        if (ev.type === "preview") { setPreviewUrl(ev.url); setTab("preview"); }
+        if (ev.type === "preview") { setPreviewUrl(ev.url); setTab("preview"); setPane("code"); }
         setLog((l) => {
           const last = l[l.length - 1];
           if ((ev.type === "text" || ev.type === "thinking") && last && last.event.type === ev.type && !last.prompt) {
@@ -159,9 +160,19 @@ function Workspace() {
         </div>
       </header>
 
+      {/* Mobile pane switcher */}
+      <div className="flex shrink-0 gap-1 border-b border-border bg-sidebar p-1.5 lg:hidden" role="tablist" aria-label="Workspace panes">
+        {([["agent", "Agent"], ["files", "Files"], ["code", "Code"]] as const).map(([v, label]) => (
+          <button key={v} role="tab" aria-selected={pane === v} onClick={() => setPane(v)}
+            className={cn("flex-1 rounded-md py-1.5 text-xs", pane === v ? "bg-primary text-primary-foreground" : "text-muted-foreground")}>
+            {label}
+          </button>
+        ))}
+      </div>
+
       <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
         {/* File tree */}
-        <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-sidebar lg:flex">
+        <aside className={cn("w-60 shrink-0 flex-col border-r border-border bg-sidebar lg:flex", pane === "files" ? "flex" : "hidden")}>
           <div className="flex h-9 items-center justify-between px-3 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
             Files
             <button onClick={() => active && void loadFiles(active)} aria-label="Refresh files" className="rounded p-1 hover:bg-accent"><RefreshCw className="h-3.5 w-3.5" /></button>
@@ -173,7 +184,7 @@ function Workspace() {
         </aside>
 
         {/* Editor / preview */}
-        <section className="hidden min-w-0 flex-1 flex-col border-r border-border md:flex">
+        <section className={cn("min-w-0 flex-1 flex-col border-r border-border md:flex", pane === "code" ? "flex" : "hidden")}>
           <div className="flex h-9 items-center gap-1 border-b border-border px-2">
             {(["code", "preview"] as const).map((t) => (
               <button key={t} onClick={() => setTab(t)} className={cn("flex items-center gap-1.5 rounded px-2.5 py-1 text-xs", tab === t ? "bg-accent text-foreground" : "text-muted-foreground hover:text-foreground")}>
@@ -200,7 +211,7 @@ function Workspace() {
         </section>
 
         {/* Agent panel */}
-        <section className="flex min-h-0 w-full flex-col lg:w-[440px] lg:shrink-0">
+        <section className={cn("flex min-h-0 w-full flex-col lg:w-[440px] lg:shrink-0", pane !== "agent" && "hidden lg:flex")}>
           <div className="flex h-9 items-center gap-2 border-b border-border px-3 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
             <Terminal className="h-3.5 w-3.5" /> Run log
             {log.length > 0 && <button onClick={() => setLog([])} className="ml-auto rounded p-1 hover:bg-accent" aria-label="Clear log"><Trash2 className="h-3.5 w-3.5" /></button>}
